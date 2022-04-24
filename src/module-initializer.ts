@@ -28,8 +28,14 @@ export class ModuleInitializer {
     private readonly Module: ModuleClass,
     private readonly initiated: Record<string, ModuleInstance>,
     private readonly app: Express,
+    private readonly allInstances: Record<string, ServiceInstance | ControllerInstance> = {},
   ) {
     this.params = Module.prototype.params || {};
+  }
+
+  public get<T>(Cls: unknown): T {
+    const name = (Cls as ServiceClass).name;
+    return this.allInstances[name] as T;
   }
 
   public init(): ModuleInstance | undefined {
@@ -47,7 +53,7 @@ export class ModuleInitializer {
   private initIncluded() {
     const toInclude = this.params.include || [];
     toInclude.forEach((module) => {
-      const initializer = new ModuleInitializer(module, this.initiated, this.app);
+      const initializer = new ModuleInitializer(module, this.initiated, this.app, this.allInstances);
       initializer.init();
       Object.keys(initializer.exportedServices).forEach((key: string) => {
         this.providedServices[key] = initializer.exportedServices[key];
@@ -70,6 +76,7 @@ export class ModuleInitializer {
     setControllerApp(Cls, this.app);
     const args = toInject.map((item: string) => this.providedServices[item]);
     const controller = new Cls(...args);
+    this.allInstances[Cls.name] = controller;
     // eslint-disable-next-line
     for (const key in controller) {
       if (typeof controller[key] === 'function' && key !== CONTROLLER_APP_PROPERTY_NAME) {
@@ -84,6 +91,7 @@ export class ModuleInitializer {
     const args = toInject.map((item: string) => this.providedServices[item]);
     const service = new Cls(...args);
     this.providedServices[Cls.name] = service;
+    this.allInstances[Cls.name] = service;
 
     const toExport = (this.params.export || []) as ServiceClass[];
     if (toExport.includes(Cls)) this.exportedServices[Cls.name] = service;

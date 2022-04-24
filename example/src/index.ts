@@ -7,10 +7,8 @@ import { environment } from './environment';
 const app: Express = express();
 app.use(bodyParser.json());
 
-initAppModule(AppModule, app);
+export const appModule = initAppModule(AppModule, app);
 
-const server = app.listen(environment.PORT, () => {
-  console.log('Started');
+export default app.listen(environment.PORT, () => {
+  // Pass
 });
-
-export default server;

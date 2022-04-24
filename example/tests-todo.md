@@ -1,4 +1,3 @@
-- [ ] Service is injected to controller
 - [ ] Module A exports service. Module B include module A. Service from module A is injected to service from module B
 - [ ] Module A doesn't export service. Module B include module A. Service from module A is not injected to service from module B
 - [ ] Module A exports service. Module B doesn't include module A. Service from module A is not injected to service from module B
@@ -11,3 +10,4 @@
 - [ ] ApiKeyAuthStrategy returns 401 on wrong request header
 
 - [x] Method handler is initiated
+- [x] Service is injected to controller
