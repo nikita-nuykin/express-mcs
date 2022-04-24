@@ -29,7 +29,7 @@ export class ModuleInitializer {
     private readonly initiated: Record<string, ModuleInstance>,
     private readonly app: Express,
   ) {
-    this.params = Module.prototype.params || { module: Module };
+    this.params = Module.prototype.params || {};
   }
 
   public init(): ModuleInstance | undefined {

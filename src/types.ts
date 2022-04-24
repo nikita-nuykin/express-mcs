@@ -10,26 +10,12 @@ export type MethodName = string | symbol;
 
 export type MethodParams = Record<MethodName, ParamType[]>;
 
-export type ModuleParamsMain = {
+export type ModuleParams = {
   include?: ModuleClass[];
   controllers?: unknown[];
   providers?: unknown[];
   export?: unknown[];
-  main: true;
-  app: Express;
-  module: ModuleClass;
 };
-
-export type ModuleParamsDependent = {
-  include?: ModuleClass[];
-  controllers?: unknown[];
-  providers?: unknown[];
-  export?: unknown[];
-  main?: false;
-  module: ModuleClass;
-};
-
-export type ModuleParams = ModuleParamsDependent | ModuleParamsMain;
 
 export type ModuleInstance = {
   params?: ModuleParams;
