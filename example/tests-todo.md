@@ -1,0 +1,12 @@
+- [ ] Method handler is initiated
+- [ ] Service is injected to controller
+- [ ] Module A exports service. Module B include module A. Service from module A is injected to service from module B
+- [ ] Module A doesn't export service. Module B include module A. Service from module A is not injected to service from module B
+- [ ] Module A exports service. Module B doesn't include module A. Service from module A is not injected to service from module B
+- [ ] Controller method Req support
+- [ ] Controller method Res support
+- [ ] Controller method Body support
+- [ ] Controller method Params support
+- [ ] Controller method Query support
+- [ ] Different order of controller method decorator doesn't influence result
+- [ ] ApiKeyAuthStrategy returns 401 on wrong request header

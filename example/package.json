@@ -1,0 +1,9 @@
+{
+  "name": "example-project",
+  "version": "1.0.0",
+  "description": "Express-mcs usage example with essential tests",
+  "main": "src/index.ts",
+  "author": "Nikita Nuykin",
+  "license": "MIT",
+  "private": true
+}
