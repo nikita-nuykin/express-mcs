@@ -9,6 +9,8 @@ app.use(bodyParser.json());
 
 initAppModule(AppModule, app);
 
-app.listen(environment.PORT, () => {
+const server = app.listen(environment.PORT, () => {
   console.log('Started');
 });
+
+export default server;
