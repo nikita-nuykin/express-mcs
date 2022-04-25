@@ -72,7 +72,7 @@ export class ModuleInitializer {
   }
 
   private initController = (Cls: ControllerClass): ControllerInstance => {
-    const toInject = getInjected(Cls.constructor);
+    const toInject = getInjected(Cls);
     setControllerApp(Cls, this.app);
     const args = toInject.map((item: string) => this.providedServices[item]);
     const controller = new Cls(...args);
@@ -87,7 +87,7 @@ export class ModuleInitializer {
   };
 
   private initProvider = (Cls: ServiceClass) => {
-    const toInject = getInjected(Cls.constructor);
+    const toInject = getInjected(Cls);
     const args = toInject.map((item: string) => this.providedServices[item]);
     const service = new Cls(...args);
     this.providedServices[Cls.name] = service;

@@ -11,6 +11,6 @@ export class UsersController {
 
   @Get(APP_ROUTES.users.findAll)
   public findAll() {
-    return this.service.findAllUsers;
+    return this.service.findAllUsers();
   }
 }

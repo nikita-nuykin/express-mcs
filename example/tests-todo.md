@@ -11,3 +11,4 @@
 
 - [x] Method handler is initiated
 - [x] Service is injected to controller
+- [x] Standalone module and it's services didn't initiate

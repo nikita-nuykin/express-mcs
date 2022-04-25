@@ -6,7 +6,7 @@ import { getMethodParams } from './utils/method-params';
 import { getControllerRootPath } from './utils/root-path';
 
 function createMethodDecorator(httpMethod: Method) {
-  return function decoratorFunc(path: string): MethodDecorator {
+  return function decoratorFunc(path = ''): MethodDecorator {
     return (target: unknown, key: MethodName, descriptor: PropertyDescriptor) => {
       const controllerMethod = descriptor.value;
 

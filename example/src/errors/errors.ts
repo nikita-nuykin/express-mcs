@@ -6,3 +6,9 @@ export class EnvironmentVariableError extends CustomError {
     super(ErrorName.EnvironmentVariableError);
   }
 }
+
+export class NotImplementedError extends CustomError {
+  constructor() {
+    super(ErrorName.NotImplementedError);
+  }
+}
