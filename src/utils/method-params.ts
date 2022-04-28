@@ -3,7 +3,7 @@ import { ParamType } from '../constants';
 import { ControllerInstance, MethodName } from '../types';
 import { getMethodParamTypes } from './class-method-params';
 
-function getParamByType(type: ParamType, req: Request, res: Response) {
+function getParamValueByType(type: ParamType, req: Request, res: Response) {
   switch (type) {
     case ParamType.Req:
       return req;
@@ -25,7 +25,7 @@ export function getMethodParams(
   res: Response,
 ) {
   const paramTypes = getMethodParamTypes({ controller, methodName });
-  const args: unknown[] = paramTypes?.map((type) => getParamByType(type, req, res)) || [];
+  const args: unknown[] = paramTypes?.map((type) => getParamValueByType(type, req, res)) || [];
 
   args.push(req, res);
   return args;

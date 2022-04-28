@@ -4,7 +4,7 @@ import { ControllerClass, MethodName } from './types';
 
 function getParameterDecorator(paramType: ParamType): ParameterDecorator {
   return (target: unknown, name: MethodName) => {
-    addParamToMethodParams((target as ControllerClass).constructor, name, paramType);
+    addParamToMethodParams(target as ControllerClass, name, paramType);
   };
 }
 

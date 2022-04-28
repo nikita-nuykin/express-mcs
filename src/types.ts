@@ -1,6 +1,6 @@
-import { Express } from 'express';
+import {Express} from 'express';
 import {
-  CLASS_INJECT_PARAM,
+  CONTROLLER_APP_PROPERTY_NAME,
   CONTROLLER_METHOD_PARAMS_PROPERTY_NAME,
   CONTROLLER_ROOT_PATH_PROPERTY_NAME,
   ParamType,
@@ -12,42 +12,34 @@ export type MethodParams = Record<MethodName, ParamType[]>;
 
 export type ModuleParams = {
   include?: ModuleClass[];
-  controllers?: unknown[];
-  providers?: unknown[];
-  export?: unknown[];
+  controllers?: ControllerClass[];
+  providers?: ServiceClass[];
+  export?: ServiceClass[];
 };
 
-export type ModuleInstance = {
-  params?: ModuleParams;
-};
+export type ModuleInstance = unknown;
 
-export type ModuleClass = {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type ModuleClass = Function & {
   new (): ModuleInstance;
-  prototype: ModuleInstance;
-  name: string;
-};
-
-export type ControllerClass = {
-  new (...args: unknown[]): ControllerInstance;
-  constructor: ControllerClass;
-  prototype: ControllerInstance;
 };
 
 export type ControllerInstance = {
-  [CONTROLLER_ROOT_PATH_PROPERTY_NAME]?: string;
   [CONTROLLER_METHOD_PARAMS_PROPERTY_NAME]?: MethodParams;
-  [CLASS_INJECT_PARAM]?: string[];
-  [method: MethodName]: unknown;
+  [CONTROLLER_APP_PROPERTY_NAME]?: Express;
+  [CONTROLLER_ROOT_PATH_PROPERTY_NAME]?: string;
 };
 
-export type ServiceClass = {
-  new (...args: unknown[]): ServiceInstance;
-  constructor: ServiceClass
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type ControllerClass = Function & {
+  prototype: ControllerInstance;
+};
+
+export type ServiceInstance = unknown;
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type ServiceClass = Function & {
   prototype: ServiceInstance;
-};
-
-export type ServiceInstance = {
-  [CLASS_INJECT_PARAM]?: string[];
 };
 
 export type ControllerMethod = () => unknown;

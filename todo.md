@@ -1,2 +1,3 @@
 - [ ] AppModule.init
 - [ ] appModule.get(AnyClassInstance)
+- [ ] Better linter

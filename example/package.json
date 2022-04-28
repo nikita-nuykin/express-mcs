@@ -22,6 +22,6 @@
     "ts-node": "10.7.0"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest --run-in-band"
   }
 }

@@ -15,9 +15,7 @@ import { getInjected } from './utils/injected';
 
 export class ModuleInitializer {
   private readonly params: ModuleParams;
-
   private readonly providedServices: Record<string, ServiceInstance> = {};
-
   public readonly exportedServices: Record<string, ServiceInstance> = {};
 
   private get moduleName(): string {
@@ -33,9 +31,8 @@ export class ModuleInitializer {
     this.params = Module.prototype.params || {};
   }
 
-  public get<T>(Cls: unknown): T {
-    const name = (Cls as ServiceClass).name;
-    return this.allInstances[name] as T;
+  public get<T>(Cls: ServiceClass | ControllerClass): T {
+    return this.allInstances[Cls.name] as T;
   }
 
   public init(): ModuleInstance | undefined {
@@ -62,25 +59,28 @@ export class ModuleInitializer {
   }
 
   private initProviders() {
-    const providers = (this.params.providers || []) as ServiceClass[];
+    const providers = this.params.providers || [];
     providers.forEach(this.initProvider);
   }
 
   private initControllers() {
-    const toInit = (this.params.controllers || []) as ControllerClass[];
+    const toInit = this.params.controllers || [];
     toInit.forEach(this.initController);
   }
 
   private initController = (Cls: ControllerClass): ControllerInstance => {
-    const toInject = getInjected(Cls);
     setControllerApp(Cls, this.app);
+
+    const toInject = getInjected(Cls);
     const args = toInject.map((item: string) => this.providedServices[item]);
-    const controller = new Cls(...args);
+    const controller = new (Cls as any)(...args);
     this.allInstances[Cls.name] = controller;
+
     // eslint-disable-next-line
     for (const key in controller) {
-      if (typeof controller[key] === 'function' && key !== CONTROLLER_APP_PROPERTY_NAME) {
-        (controller[key] as ControllerMethod)();
+      if (key === CONTROLLER_APP_PROPERTY_NAME) continue;
+      if (typeof (controller as any)[key] === 'function') {
+        ((controller as any)[key] as ControllerMethod)();
       }
     }
     return controller;
@@ -89,11 +89,11 @@ export class ModuleInitializer {
   private initProvider = (Cls: ServiceClass) => {
     const toInject = getInjected(Cls);
     const args = toInject.map((item: string) => this.providedServices[item]);
-    const service = new Cls(...args);
+    const service = new (Cls as any)(...args);
     this.providedServices[Cls.name] = service;
     this.allInstances[Cls.name] = service;
 
-    const toExport = (this.params.export || []) as ServiceClass[];
+    const toExport = this.params.export || [];
     if (toExport.includes(Cls)) this.exportedServices[Cls.name] = service;
   };
 }

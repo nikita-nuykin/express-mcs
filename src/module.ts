@@ -3,9 +3,8 @@ import { ModuleClass, ModuleParams } from './types';
 import { ModuleInitializer } from './module-initializer';
 
 export function Module(params: ModuleParams) {
-  return (target: unknown) => {
-    // eslint-disable-next-line
-    (target as ModuleClass).prototype.params = params;
+  return (target: ModuleClass) => {
+    target.prototype.params = params;
   };
 }
 

@@ -9,13 +9,16 @@ function getControllerMethodParams(Cls: ControllerClass): MethodParams {
     // eslint-disable-next-line
     Cls.prototype[propertyName] = {};
   }
-  return Cls.prototype[propertyName] as MethodParams;
+  return Cls.prototype[propertyName];
 }
 
-export function addParamToMethodParams(Cls: ControllerClass, name: MethodName, type: ParamType) {
-  const classMethodParams = getControllerMethodParams(Cls);
-  if (!classMethodParams[name]) classMethodParams[name] = [];
-  classMethodParams[name].push(type);
+export function addParamToMethodParams(Cls: ControllerClass, methodName: MethodName, type: ParamType) {
+  const params = getControllerMethodParams(Cls);
+  if (!params[methodName]) {
+    params[methodName] = [type];
+  } else {
+    params[methodName].push(type);
+  }
 }
 
 export type GetMethodParamTypeProps = {

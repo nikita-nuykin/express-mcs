@@ -10,18 +10,17 @@ function createMethodDecorator(httpMethod: Method) {
     return (target: unknown, key: MethodName, descriptor: PropertyDescriptor) => {
       const controllerMethod = descriptor.value;
 
-      // eslint-disable-next-line
       descriptor.value = function wrapper() {
-        const url = getControllerRootPath(this as ControllerInstance) + path;
+        const controller = this as ControllerInstance;
+        const url = getControllerRootPath(controller) + path;
         const method = async (req: Request, res: Response) => {
-          const args = getMethodParams(this as ControllerInstance, key, req, res);
+          const args = getMethodParams(controller, key, req, res);
           const result = await controllerMethod.call(this, ...args);
           res.json(result);
         };
-        getControllerApp(target as ControllerInstance)[httpMethod](url, method);
+        getControllerApp(controller)[httpMethod](url, method);
       };
 
-      // eslint-disable-next-line
       descriptor.enumerable = true;
     };
   };
