@@ -1,11 +1,5 @@
 ## TODO
 
-- [ ] Better linter
-  - [x] Trailing coma
-  - [x] Trailing semicolon
-  - [ ] Object spaces
-  - [x] Import order
-
 - [ ] Docs
   - [ ] Controller
   - [ ] Controller methods
@@ -19,3 +13,12 @@
 
 - [x] AppModule.init
 - [x] appModule.get(AnyClassInstance)
+- [x] Better linter
+  - [x] Trailing coma
+  - [x] Trailing semicolon
+  - [x] Object spaces
+  - [x] Import order
+- [x] Precommit
+  - [x] typecheck
+  - [x] lint
+  - [x] run tests
