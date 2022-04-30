@@ -11,7 +11,7 @@ import {
   ServiceInstance,
 } from './types';
 import { setControllerApp } from './utils/inject-app';
-import { getInjected } from './utils/injected';
+import { getInjectedList } from './utils/injected';
 
 export class ModuleInitializer {
   private readonly params: ModuleParams;
@@ -76,7 +76,7 @@ export class ModuleInitializer {
   private initController = (Cls: ControllerClass): ControllerInstance => {
     setControllerApp(Cls, this.app);
 
-    const toInject = getInjected(Cls);
+    const toInject = getInjectedList(Cls);
     const args = toInject.map((item: string) => this.providedServices[item]);
     const controller = new (Cls as any)(...args);
     this.allInstances[Cls.name] = controller;
@@ -92,7 +92,7 @@ export class ModuleInitializer {
   };
 
   private initProvider = (Cls: ServiceClass) => {
-    const toInject = getInjected(Cls);
+    const toInject = getInjectedList(Cls);
     const args = toInject.map((item: string) => this.providedServices[item]);
     const service = new (Cls as any)(...args);
     this.providedServices[Cls.name] = service;

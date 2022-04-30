@@ -13,4 +13,17 @@ describe('Inject decorator', () => {
     expect(controller['service']).toBeTruthy();
     expect(controller['service']['constructor']['name']).toBe(UsersService.name);
   });
+
+  test('BookService is injected to UsersService', () => {
+    const usersService = appModule.get<UsersService>(UsersService);
+    const bookService = usersService['bookService'];
+    expect(bookService).toBeTruthy();
+    expect(bookService.getBookTitles().length).toEqual(1);
+  });
+
+  test('BookAdminService is not injected to UsersService', () => {
+    const usersService = appModule.get<UsersService>(UsersService);
+    const bookAdminService = usersService['booksAdminService'];
+    expect(bookAdminService).toBeFalsy();
+  });
 });
