@@ -13,6 +13,10 @@ function getParamValueByType(type: ParamType, req: Request, res: Response) {
       return req.body;
     case ParamType.Params:
       return req.params;
+    case ParamType.Query:
+      return req.query;
+    case ParamType.Headers:
+      return req.headers;
     default:
       return undefined;
   }

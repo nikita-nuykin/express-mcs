@@ -8,10 +8,10 @@ import {
 
 export type MethodName = string | symbol;
 
-export type MethodParams = Record<MethodName, ParamType[]>;
+export type MethodParams = Record<MethodName, Record<number, ParamType>>;
 
 export type ModuleParams = {
-  include?: ModuleClass[];
+  imports?: ModuleClass[];
   controllers?: ControllerClass[];
   providers?: ServiceClass[];
   export?: ServiceClass[];

@@ -1,11 +1,5 @@
-- [ ] Controller method Req support
-- [ ] Controller method Res support
-- [ ] Controller method Body support
-- [ ] Controller method Params support
-- [ ] Controller method Query support
-- [ ] Controller method Header support
-- [ ] Different order of controller method decorator doesn't influence result
 - [ ] ApiKeyAuthStrategy returns 401 on wrong request header
+- [ ] Different order of controller method decorator doesn't influence result
 
 - [x] Method handler is initiated
 - [x] Service is injected to controller
@@ -13,3 +7,9 @@
 - [x] Module A exports service. Module B include module A. Service from module A is injected to service from module B
 - [x] Module A exports service. Module B doesn't include module A. Service from module A is not injected to service from module B
 - [x] Module A doesn't export service. Module B include module A. Service from module A is not injected to service from module B
+- [x] Controller method Req support
+- [x] Controller method Body support
+- [x] Controller method Res support
+- [x] Controller method Params support
+- [x] Controller method Query support
+- [x] Controller method Header support

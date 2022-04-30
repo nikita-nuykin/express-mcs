@@ -48,7 +48,7 @@ export class ModuleInitializer {
   }
 
   private initIncluded() {
-    const toInclude = this.params.include || [];
+    const toInclude = this.params.imports || [];
     toInclude.forEach((module) => {
       const initializer = new ModuleInitializer(
         module,

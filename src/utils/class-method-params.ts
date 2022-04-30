@@ -1,25 +1,26 @@
 import { CONTROLLER_METHOD_PARAMS_PROPERTY_NAME, ParamType } from '../constants';
-import { MethodParams, ControllerClass, MethodName, ControllerInstance } from '../types';
+import { MethodParams, MethodName, ControllerInstance } from '../types';
 
-function getControllerMethodParams(Cls: ControllerClass): MethodParams {
+function getControllerMethodParams(Cls: ControllerInstance): MethodParams {
   const propertyName = CONTROLLER_METHOD_PARAMS_PROPERTY_NAME;
-  if (!Cls.prototype[propertyName]) {
-    // eslint-disable-next-line
-    Cls.prototype[propertyName] = {};
+  if (!Cls[propertyName]) {
+    Cls[propertyName] = {};
   }
-  return Cls.prototype[propertyName];
+  return Cls[propertyName] as MethodParams;
 }
 
 export function addParamToMethodParams(
-  Cls: ControllerClass,
+  Cls: ControllerInstance,
   methodName: MethodName,
   type: ParamType,
+  index: number,
 ) {
   const params = getControllerMethodParams(Cls);
   if (!params[methodName]) {
-    params[methodName] = [type];
+    params[methodName] = {};
+    params[methodName][index] = type;
   } else {
-    params[methodName].push(type);
+    params[methodName][index] = type;
   }
 }
 
@@ -34,5 +35,8 @@ export function getMethodParamTypes({
 }: GetMethodParamTypeProps): ParamType[] | undefined {
   const classMethodParams = controller[CONTROLLER_METHOD_PARAMS_PROPERTY_NAME];
   if (!classMethodParams || !classMethodParams[methodName]) return undefined;
-  return classMethodParams[methodName];
+  const obj = classMethodParams[methodName];
+  return Object.entries(obj)
+    .sort(([index1], [index2]) => (Number(index1) > Number(index2) ? 1 : -1))
+    .map((item) => item[1]);
 }

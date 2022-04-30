@@ -1,5 +1,8 @@
 ## TODO
-- [ ] include -> imports
+- [ ] Params validation support
+- [ ] Body validation support
+- [ ] Query validation support
+
 - [ ] Docs
   - [ ] Controller
   - [ ] Controller methods
@@ -22,3 +25,4 @@
   - [x] typecheck
   - [x] lint
   - [x] run tests
+- [x] include -> imports

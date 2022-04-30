@@ -3,7 +3,7 @@ import { UsersModule } from '../users/users.module';
 import { AppStatusController } from './app.controller';
 
 @Module({
-  include: [UsersModule],
+  imports: [UsersModule],
   controllers: [AppStatusController],
 })
 export class AppModule {}

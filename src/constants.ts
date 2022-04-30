@@ -3,6 +3,8 @@ export enum ParamType {
   Res = 'response',
   Body = 'body',
   Params = 'params',
+  Query = 'query',
+  Headers = 'headers',
 }
 
 export enum Method {
