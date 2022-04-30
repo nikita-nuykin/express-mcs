@@ -13,4 +13,5 @@ function tryGetVariable(key: string): string {
 
 export const environment = {
   PORT: Number(tryGetVariable('PORT')),
+  API_KEY_SECRET: tryGetVariable('API_KEY_SECRET'),
 };

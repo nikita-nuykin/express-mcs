@@ -77,4 +77,26 @@ describe('Controller Methods', () => {
       expect(response.body.headers).toMatchObject(headers);
     });
   });
+
+  describe('Custom middlewares', () => {
+    test('Order creates no difference', async () => {
+      const request = getRequest();
+      const headers = { apikey: environment.API_KEY_SECRET };
+      const res1 = await request.get(APP_ROUTES.statusApiKey1).set(headers);
+      const res2 = await request.get(APP_ROUTES.statusApiKey2).set(headers);
+      expect(res1.statusCode).toBe(200);
+      expect(res2.statusCode).toBe(200);
+      expect(res1.body).toMatchObject({ status: 'ok' });
+      expect(res1.body).toMatchObject(res2.body);
+      expect(res2.body).toMatchObject(res1.body);
+    });
+
+    test('Middleware can prevent method execution', async () => {
+      const request = getRequest();
+      const headers = { apikey: uuid() };
+      const res = await request.get(APP_ROUTES.statusApiKey1).set(headers);
+      expect(res.statusCode).toBe(401);
+      expect(res.body).toEqual({});
+    });
+  });
 });

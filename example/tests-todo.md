@@ -1,6 +1,3 @@
-- [ ] ApiKeyAuthStrategy returns 401 on wrong request header
-- [ ] Different order of controller method decorator doesn't influence result
-
 - [x] Method handler is initiated
 - [x] Service is injected to controller
 - [x] Standalone module and it's services didn't initiate
@@ -13,3 +10,5 @@
 - [x] Controller method Params support
 - [x] Controller method Query support
 - [x] Controller method Header support
+- [x] ApiKeyAuthStrategy returns 401 on wrong request header
+- [x] Different order of controller method decorator doesn't influence result

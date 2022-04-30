@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { Body, Controller, Get, Headers, Params, Post, Query, Req, Res } from '../../../src';
+import { ApiKeyAuth } from '../auth/api-key-auth.strategy';
 import { APP_ROUTES } from '../constants';
 
 @Controller()
@@ -36,5 +37,17 @@ export class AppStatusController {
       res.json(result);
     }
     return result;
+  }
+
+  @Get(APP_ROUTES.statusApiKey1)
+  @ApiKeyAuth
+  public statusApiKey1() {
+    return { status: 'ok' };
+  }
+
+  @ApiKeyAuth
+  @Get(APP_ROUTES.statusApiKey2)
+  public statusApiKey2() {
+    return { status: 'ok' };
   }
 }
