@@ -1,7 +1,8 @@
 ## TODO
 - [ ] Params validation support
-- [ ] Body validation support
+  - [ ] Tests
 - [ ] Query validation support
+  - [ ] Tests
 - [ ] Example app with mikro-orm
 
 - [ ] Docs
@@ -28,3 +29,5 @@
   - [x] run tests
 - [x] include -> imports
 - [x] example -> test-app
+- [x] Body validation support
+  - [x] Tests

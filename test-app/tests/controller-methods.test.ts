@@ -2,6 +2,8 @@ import { v4 as uuid } from 'uuid';
 
 import { APP_ROUTES } from '../src/constants';
 import { environment } from '../src/environment';
+import { UserCreateRequestData } from '../src/users/dto/create.dto';
+import { UserType } from '../src/users/user.constants';
 import { setUrlParams } from '../src/utils/set-url-params';
 import { getRequest, stopServer } from './utils';
 
@@ -97,6 +99,30 @@ describe('Controller Methods', () => {
       const res = await request.get(APP_ROUTES.statusApiKey1).set(headers);
       expect(res.statusCode).toBe(401);
       expect(res.body).toEqual({});
+    });
+  });
+
+  describe('Data validation', () => {
+    describe('Request data validation', () => {
+      test('Valid data scheme', async () => {
+        const request = getRequest();
+        const data: UserCreateRequestData = {
+          name: uuid(),
+          type: UserType.Author,
+        };
+        const res = await request.post(APP_ROUTES.users.root + APP_ROUTES.users.create).send(data);
+        expect(res.statusCode).toBe(200);
+        expect(res.body.status).toBe('ok');
+      });
+
+      test('Invalid data scheme', async () => {
+        const request = getRequest();
+        const data = {
+          type: uuid(),
+        };
+        const res = await request.post(APP_ROUTES.users.root + APP_ROUTES.users.create).send(data);
+        expect(res.statusCode).toBe(400);
+      });
     });
   });
 });

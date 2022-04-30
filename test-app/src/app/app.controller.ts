@@ -14,10 +14,10 @@ export class AppStatusController {
   @Post(APP_ROUTES.testRequest)
   public testRequest(
     @Req req: Request,
-    @Body body: Record<string, unknown>,
+    @Body() body: Record<string, unknown>,
     @Res res: Response,
-    @Params params: unknown,
-    @Query query: unknown,
+    @Params() params: unknown,
+    @Query() query: unknown,
     @Headers headers: unknown,
   ) {
     const result = {

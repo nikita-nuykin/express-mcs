@@ -28,5 +28,8 @@
   },
   "simple-git-hooks": {
     "pre-commit": "yarn typecheck && yarn lint && yarn test"
+  },
+  "dependencies": {
+    "class-validator": "^0.13.2"
   }
 }

@@ -1,16 +1,26 @@
 import { addParamToMethodParams } from './utils/class-method-params';
 import { ParamType } from './constants';
-import { ControllerInstance, MethodName } from './types';
+import { ControllerInstance, ExpectedDataClass, MethodName } from './types';
 
-function getParameterDecorator(paramType: ParamType): ParameterDecorator {
-  return (target: unknown, name: MethodName, index: number) => {
-    addParamToMethodParams(target as ControllerInstance, name, paramType, index);
+function getParameterDecorator(
+  paramType: ParamType,
+  expectedDataClass?: ExpectedDataClass,
+): ParameterDecorator {
+  return (target: unknown, methodName: MethodName, index: number) => {
+    addParamToMethodParams({
+      Cls: target as ControllerInstance,
+      methodName,
+      paramType,
+      index,
+      expectedDataClass,
+    });
   };
 }
 
 export const Req = getParameterDecorator(ParamType.Req);
 export const Res = getParameterDecorator(ParamType.Res);
-export const Body = getParameterDecorator(ParamType.Body);
-export const Params = getParameterDecorator(ParamType.Params);
-export const Query = getParameterDecorator(ParamType.Query);
 export const Headers = getParameterDecorator(ParamType.Headers);
+
+export const Body = (dto?: ExpectedDataClass) => getParameterDecorator(ParamType.Body, dto);
+export const Params = (dto?: ExpectedDataClass) => getParameterDecorator(ParamType.Params, dto);
+export const Query = (dto?: ExpectedDataClass) => getParameterDecorator(ParamType.Query, dto);

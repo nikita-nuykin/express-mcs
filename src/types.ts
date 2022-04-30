@@ -8,7 +8,16 @@ import {
 
 export type MethodName = string | symbol;
 
-export type MethodParams = Record<MethodName, Record<number, ParamType>>;
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type ExpectedDataClass = Function & {
+  new (): any;
+};
+export type ParamMetadata = {
+  type: ParamType;
+  dataClass?: ExpectedDataClass;
+};
+export type MethodParamMetadata = Record<number, ParamMetadata>;
+export type ClassMethodParamMetadata = Record<MethodName, MethodParamMetadata>;
 
 export type ModuleParams = {
   imports?: ModuleClass[];
@@ -25,7 +34,7 @@ export type ModuleClass = Function & {
 };
 
 export type ControllerInstance = {
-  [CONTROLLER_METHOD_PARAMS_PROPERTY_NAME]?: MethodParams;
+  [CONTROLLER_METHOD_PARAMS_PROPERTY_NAME]?: ClassMethodParamMetadata;
   [CONTROLLER_APP_PROPERTY_NAME]?: Express;
   [CONTROLLER_ROOT_PATH_PROPERTY_NAME]?: string;
 };

@@ -6,6 +6,7 @@ export const APP_ROUTES = {
   users: {
     root: '/api/v1/users',
     findAll: '',
+    create: '',
   },
   cars: {
     root: '/api/v1/users',

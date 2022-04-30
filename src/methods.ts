@@ -10,11 +10,11 @@ function createMethodDecorator(httpMethod: Method) {
     return (target: unknown, key: MethodName, descriptor: PropertyDescriptor) => {
       const controllerMethod = descriptor.value;
 
-      descriptor.value = function wrapper() {
+      descriptor.value = async function wrapper() {
         const controller = this as ControllerInstance;
         const url = getControllerRootPath(controller) + path;
         const method = async (req: Request, res: Response) => {
-          const args = getMethodParams(controller, key, req, res);
+          const args = await getMethodParams(controller, key, req, res);
           const result = await controllerMethod.call(this, ...args);
           if (!res.headersSent) {
             res.json(result);

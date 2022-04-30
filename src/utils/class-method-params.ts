@@ -1,27 +1,40 @@
 import { CONTROLLER_METHOD_PARAMS_PROPERTY_NAME, ParamType } from '../constants';
-import { MethodParams, MethodName, ControllerInstance } from '../types';
+import {
+  ClassMethodParamMetadata,
+  MethodName,
+  ControllerInstance,
+  ExpectedDataClass,
+  ParamMetadata,
+} from '../types';
 
-function getControllerMethodParams(Cls: ControllerInstance): MethodParams {
+function getControllerMethodParams(Cls: ControllerInstance): ClassMethodParamMetadata {
   const propertyName = CONTROLLER_METHOD_PARAMS_PROPERTY_NAME;
   if (!Cls[propertyName]) {
     Cls[propertyName] = {};
   }
-  return Cls[propertyName] as MethodParams;
+  return Cls[propertyName] as ClassMethodParamMetadata;
 }
 
-export function addParamToMethodParams(
-  Cls: ControllerInstance,
-  methodName: MethodName,
-  type: ParamType,
-  index: number,
-) {
+export type AddParamToMethodParamsProps = {
+  Cls: ControllerInstance;
+  methodName: MethodName;
+  paramType: ParamType;
+  index: number;
+  expectedDataClass?: ExpectedDataClass;
+};
+
+export function addParamToMethodParams({
+  Cls,
+  methodName,
+  index,
+  paramType,
+  expectedDataClass,
+}: AddParamToMethodParamsProps) {
   const params = getControllerMethodParams(Cls);
   if (!params[methodName]) {
     params[methodName] = {};
-    params[methodName][index] = type;
-  } else {
-    params[methodName][index] = type;
   }
+  params[methodName][index] = { type: paramType, dataClass: expectedDataClass };
 }
 
 export type GetMethodParamTypeProps = {
@@ -29,10 +42,10 @@ export type GetMethodParamTypeProps = {
   methodName: MethodName;
 };
 
-export function getMethodParamTypes({
+export function getMethodParamMetadata({
   controller,
   methodName,
-}: GetMethodParamTypeProps): ParamType[] | undefined {
+}: GetMethodParamTypeProps): ParamMetadata[] | undefined {
   const classMethodParams = controller[CONTROLLER_METHOD_PARAMS_PROPERTY_NAME];
   if (!classMethodParams || !classMethodParams[methodName]) return undefined;
   const obj = classMethodParams[methodName];
