@@ -4,7 +4,7 @@ import { ControllerInstance, MethodName, ParamMetadata } from '../types';
 import { getMethodParamMetadata } from './class-method-params';
 import { getValidatedData } from './data-validator';
 
-function getParamValue(meta: ParamMetadata, req: Request, res: Response) {
+async function getParamValue(meta: ParamMetadata, req: Request, res: Response): Promise<unknown> {
   switch (meta.type) {
     case ParamType.Req:
       return req;
@@ -17,12 +17,12 @@ function getParamValue(meta: ParamMetadata, req: Request, res: Response) {
       return req.body;
     case ParamType.Params:
       if (meta.dataClass) {
-        return getValidatedData({ data: req.body, Cls: meta.dataClass, res });
+        return getValidatedData({ data: req.params, Cls: meta.dataClass, res });
       }
       return req.params;
     case ParamType.Query:
       if (meta.dataClass) {
-        return getValidatedData({ data: req.body, Cls: meta.dataClass, res });
+        return getValidatedData({ data: req.query, Cls: meta.dataClass, res });
       }
       return req.query;
     case ParamType.Headers:
@@ -38,9 +38,14 @@ export async function getMethodParams(
   req: Request,
   res: Response,
 ) {
-  const paramTypes = getMethodParamMetadata({ controller, methodName });
-  const args: unknown[] = paramTypes?.map((meta) => getParamValue(meta, req, res)) || [];
-  await Promise.all(args);
+  const paramMeta = getMethodParamMetadata({ controller, methodName }) || [];
+  const args: unknown[] = [];
+  for (const meta of paramMeta) {
+    if (res.headersSent) continue;
+
+    const value = await getParamValue(meta, req, res);
+    args.push(value);
+  }
 
   args.push(req, res);
   return args;

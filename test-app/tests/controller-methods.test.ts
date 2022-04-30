@@ -3,6 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { APP_ROUTES } from '../src/constants';
 import { environment } from '../src/environment';
 import { UserCreateRequestData } from '../src/users/dto/create.dto';
+import { UserDeleteRequestParams } from '../src/users/dto/delete.dto';
 import { UserType } from '../src/users/user.constants';
 import { setUrlParams } from '../src/utils/set-url-params';
 import { getRequest, stopServer } from './utils';
@@ -122,6 +123,28 @@ describe('Controller Methods', () => {
         };
         const res = await request.post(APP_ROUTES.users.root + APP_ROUTES.users.create).send(data);
         expect(res.statusCode).toBe(400);
+        expect(res.body.status).toBeFalsy();
+      });
+    });
+
+    describe('Request params validation', () => {
+      test('Valid data scheme', async () => {
+        const request = getRequest();
+        const params = { id: uuid() };
+        const url = setUrlParams(APP_ROUTES.users.root + APP_ROUTES.users.delete, params);
+        const res = await request.delete(url);
+        expect(res.statusCode).toBe(200);
+        expect(res.body.status).toBe('ok');
+        expect(res.body.id).toBe(params.id);
+      });
+
+      test('Invalid data scheme', async () => {
+        const request = getRequest();
+        const params = { id: 100 };
+        const url = setUrlParams(APP_ROUTES.users.root + APP_ROUTES.users.delete, params);
+        const res = await request.delete(url);
+        expect(res.statusCode).toBe(400);
+        expect(res.body.status).toBeFalsy();
       });
     });
   });

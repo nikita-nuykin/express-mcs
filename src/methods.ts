@@ -15,6 +15,8 @@ function createMethodDecorator(httpMethod: Method) {
         const url = getControllerRootPath(controller) + path;
         const method = async (req: Request, res: Response) => {
           const args = await getMethodParams(controller, key, req, res);
+          if (res.headersSent) return;
+
           const result = await controllerMethod.call(this, ...args);
           if (!res.headersSent) {
             res.json(result);

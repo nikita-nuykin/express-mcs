@@ -15,5 +15,5 @@ export async function getValidatedData({ data, Cls, res }: GetValidatedDataProps
   });
   const errors = await validate(instance);
   if (!errors.length) return instance;
-  res.status(400).json(errors);
+  res.status(400).json(errors).send();
 }

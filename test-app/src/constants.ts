@@ -7,6 +7,7 @@ export const APP_ROUTES = {
     root: '/api/v1/users',
     findAll: '',
     create: '',
+    delete: '/:id',
   },
   cars: {
     root: '/api/v1/users',
