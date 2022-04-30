@@ -1,6 +1,6 @@
-import { Module } from "../../../src";
-import { CarsController } from "./cars.controller";
-import { CarsService } from "./cars.service";
+import { Module } from '../../../src';
+import { CarsController } from './cars.controller';
+import { CarsService } from './cars.service';
 
 @Module({
   providers: [CarsService],

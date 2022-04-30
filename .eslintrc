@@ -2,11 +2,34 @@
   "root": true,
   "parser": "@typescript-eslint/parser",
   "plugins": [
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "import",
+    "eslint-plugin-prettier"
   ],
   "extends": [
     "eslint:recommended",
+    "eslint-config-prettier",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
-  ]
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript"
+  ],
+  "rules": {
+    "import/order": "error",
+    "no-trailing-spaces": "error",
+    "semi": "error",
+    "comma-dangle": "off",
+    "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
+    "object-curly-spacing": ["error", "always"],
+    "array-element-newline": ["error", {"minItems": 4}],
+    "max-len": ["error", {"code": 100}],
+    "prettier/prettier": ["error", {
+      "printWidth": 100,
+      "trailingComma": "all",
+      "tabWidth": 2,
+      "semi": true,
+      "singleQuote": true,
+      "bracketSpacing": true,
+    }]
+  }
 }

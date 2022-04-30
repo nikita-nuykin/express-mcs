@@ -6,6 +6,6 @@ export const APP_ROUTES = {
   },
   cars: {
     root: '/api/v1/users',
-    getCars: ''
+    getCars: '',
   },
-}
+};

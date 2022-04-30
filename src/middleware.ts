@@ -4,7 +4,7 @@ import { MethodName } from './types';
 export type BaseReqResDecoratorFunc = (
   req: Request,
   res: Response,
-  next: () => unknown
+  next: () => unknown,
 ) => Promise<unknown>;
 
 export function getMiddleware(func: BaseReqResDecoratorFunc) {

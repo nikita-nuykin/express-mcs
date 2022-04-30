@@ -1,7 +1,5 @@
 import { CONTROLLER_METHOD_PARAMS_PROPERTY_NAME, ParamType } from '../constants';
-import {
-  MethodParams, ControllerClass, MethodName, ControllerInstance,
-} from '../types';
+import { MethodParams, ControllerClass, MethodName, ControllerInstance } from '../types';
 
 function getControllerMethodParams(Cls: ControllerClass): MethodParams {
   const propertyName = CONTROLLER_METHOD_PARAMS_PROPERTY_NAME;
@@ -12,7 +10,11 @@ function getControllerMethodParams(Cls: ControllerClass): MethodParams {
   return Cls.prototype[propertyName];
 }
 
-export function addParamToMethodParams(Cls: ControllerClass, methodName: MethodName, type: ParamType) {
+export function addParamToMethodParams(
+  Cls: ControllerClass,
+  methodName: MethodName,
+  type: ParamType,
+) {
   const params = getControllerMethodParams(Cls);
   if (!params[methodName]) {
     params[methodName] = [type];

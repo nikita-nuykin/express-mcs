@@ -1,4 +1,4 @@
-import { NotImplementedError } from "../errors/errors";
+import { NotImplementedError } from '../errors/errors';
 
 export class CarsService {
   constructor() {

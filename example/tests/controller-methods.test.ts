@@ -10,6 +10,6 @@ describe('Controller Methods', () => {
     const request = getRequest();
     const response = await request.get(APP_ROUTES.status);
     expect(response.statusCode).toEqual(200);
-    expect(response.body).toMatchObject({status: 'ok'});
+    expect(response.body).toMatchObject({ status: 'ok' });
   });
 });

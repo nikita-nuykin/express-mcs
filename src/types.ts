@@ -1,4 +1,4 @@
-import {Express} from 'express';
+import { Express } from 'express';
 import {
   CONTROLLER_APP_PROPERTY_NAME,
   CONTROLLER_METHOD_PARAMS_PROPERTY_NAME,

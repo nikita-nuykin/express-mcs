@@ -50,7 +50,12 @@ export class ModuleInitializer {
   private initIncluded() {
     const toInclude = this.params.include || [];
     toInclude.forEach((module) => {
-      const initializer = new ModuleInitializer(module, this.initiated, this.app, this.allInstances);
+      const initializer = new ModuleInitializer(
+        module,
+        this.initiated,
+        this.app,
+        this.allInstances,
+      );
       initializer.init();
       Object.keys(initializer.exportedServices).forEach((key: string) => {
         this.providedServices[key] = initializer.exportedServices[key];

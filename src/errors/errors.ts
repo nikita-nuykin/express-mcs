@@ -1,4 +1,4 @@
-import { ErrorName } from "./error-names";
+import { ErrorName } from './error-names';
 
 export class AppDidNotFoundError extends Error {
   constructor() {

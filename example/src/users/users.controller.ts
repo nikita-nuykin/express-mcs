@@ -1,10 +1,10 @@
-import { Controller, Get, Inject } from "../../../src";
-import { APP_ROUTES } from "../constants";
-import { UsersService } from "./users.service";
+import { Controller, Get, Inject } from '../../../src';
+import { APP_ROUTES } from '../constants';
+import { UsersService } from './users.service';
 
 @Controller(APP_ROUTES.users.root)
 export class UsersController {
-  constructor (
+  constructor(
     @Inject(UsersService)
     private readonly service: UsersService,
   ) {}

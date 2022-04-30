@@ -13,4 +13,4 @@ function tryGetVariable(key: string): string {
 
 export const environment = {
   PORT: Number(tryGetVariable('PORT')),
-}
+};
