@@ -2,6 +2,7 @@
 - [ ] Params validation support
 - [ ] Body validation support
 - [ ] Query validation support
+- [ ] Example app with mikro-orm
 
 - [ ] Docs
   - [ ] Controller
@@ -26,3 +27,4 @@
   - [x] lint
   - [x] run tests
 - [x] include -> imports
+- [x] example -> test-app

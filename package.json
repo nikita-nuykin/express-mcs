@@ -8,9 +8,9 @@
   "private": false,
   "scripts": {
     "build": "yarn tsc",
-    "typecheck": "tsc --noEmit && cd example && yarn typecheck",
+    "typecheck": "tsc --noEmit && cd test-app && yarn typecheck",
     "lint": "eslint . --ext .ts",
-    "test": "cd example && yarn test"
+    "test": "cd test-app && yarn test"
   },
   "devDependencies": {
     "@types/express": "4.17.13",
