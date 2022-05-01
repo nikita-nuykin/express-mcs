@@ -1,4 +1,8 @@
 ## TODO
+- [ ] Commit squash
+- [ ] Publish
+- [ ] Example app to package
+
 - [ ] Docs
   - [ ] Controller
   - [ ] Controller methods
