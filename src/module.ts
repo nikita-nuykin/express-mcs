@@ -1,6 +1,7 @@
 import { Express } from 'express';
 import { ModuleClass, ModuleParams } from './types';
 import { ModuleInitializer } from './module-initializer';
+import { AppContext } from './app-context';
 
 export function Module(params: ModuleParams) {
   return (target: ModuleClass) => {
@@ -8,8 +9,8 @@ export function Module(params: ModuleParams) {
   };
 }
 
-export function initAppModule(Module: ModuleClass, app: Express) {
-  const module = new ModuleInitializer(Module, {}, app);
-  module.init();
-  return module;
+export function initAppModule(Module: ModuleClass, app: Express): AppContext {
+  const context = new AppContext({ app });
+  new ModuleInitializer({ Module, context }).init();
+  return context;
 }

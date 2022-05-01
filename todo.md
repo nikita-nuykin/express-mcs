@@ -1,4 +1,6 @@
 ## TODO
+- [ ] Throw http error with status
+
 - [ ] Example app
   - [ ] mikro-orm
   - [ ] auth

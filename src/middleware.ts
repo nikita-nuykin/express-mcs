@@ -12,6 +12,7 @@ export function getMiddleware(func: BaseReqResDecoratorFunc) {
       if (req && res) {
         await func(req, res);
       }
+      if (res && res.headersSent) return;
       return controllerMethod.call(this, ...args);
     };
     return descriptor;

@@ -23,7 +23,7 @@ export type ModuleParams = {
   imports?: ModuleClass[];
   controllers?: ControllerClass[];
   providers?: ServiceClass[];
-  export?: ServiceClass[];
+  exports?: ServiceClass[];
 };
 
 export type ModuleInstance = unknown;
@@ -44,7 +44,10 @@ export type ControllerClass = Function & {
   prototype: ControllerInstance;
 };
 
-export type ServiceInstance = unknown;
+export type ServiceInstance = {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  constructor: Function;
+};
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type ServiceClass = Function & {

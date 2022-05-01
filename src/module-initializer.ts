@@ -1,11 +1,10 @@
-import { Express } from 'express';
+import { AppContext } from './app-context';
 import { CONTROLLER_APP_PROPERTY_NAME } from './constants';
 import {
   ControllerClass,
   ControllerInstance,
   ControllerMethod,
   ModuleClass,
-  ModuleInstance,
   ModuleParams,
   ServiceClass,
   ServiceInstance,
@@ -13,73 +12,73 @@ import {
 import { setControllerApp } from './utils/inject-app';
 import { getInjectedList } from './utils/injected';
 
+export type ModuleInitializerProps = {
+  Module: ModuleClass;
+  context: AppContext;
+};
+
 export class ModuleInitializer {
-  private readonly params: ModuleParams;
-  private readonly providedServices: Record<string, ServiceInstance> = {};
-  public readonly exportedServices: Record<string, ServiceInstance> = {};
+  private readonly context: AppContext;
 
-  private get moduleName(): string {
-    return this.Module.name;
+  private readonly moduleName: string;
+  private readonly Module: ModuleClass;
+
+  private readonly imports: ModuleClass[];
+  private readonly controllers: ControllerClass[];
+  private readonly providers: ServiceClass[];
+  private readonly exports: ServiceClass[];
+
+  private readonly provided: Record<string, ServiceInstance> = {};
+
+  constructor({ Module, context }: ModuleInitializerProps) {
+    const params: ModuleParams = Module.prototype.params || {};
+    this.imports = params.imports || [];
+    this.controllers = params.controllers || [];
+    this.providers = params.providers || [];
+    this.exports = params.exports || [];
+
+    this.Module = Module;
+    this.moduleName = Module.name;
+    this.context = context;
   }
 
-  constructor(
-    private readonly Module: ModuleClass,
-    private readonly initiated: Record<string, ModuleInstance>,
-    private readonly app: Express,
-    private readonly allInstances: Record<string, ServiceInstance | ControllerInstance> = {},
-  ) {
-    this.params = Module.prototype.params || {};
-  }
-
-  public get<T>(Cls: ServiceClass | ControllerClass): T {
-    return this.allInstances[Cls.name] as T;
-  }
-
-  public init(): ModuleInstance | undefined {
-    if (this.initiated[this.moduleName]) return undefined;
+  public init(): void {
+    if (this.context.initiatedModules.includes(this.moduleName)) return;
 
     this.initIncluded();
+    // collect provided
     this.initProviders();
     this.initControllers();
 
-    const instance = new this.Module();
-    this.initiated[this.moduleName] = instance;
-    return instance;
+    new this.Module(); // ???
+    this.context.initiatedModules.push(this.moduleName);
   }
 
   private initIncluded() {
-    const toInclude = this.params.imports || [];
-    toInclude.forEach((module) => {
-      const initializer = new ModuleInitializer(
-        module,
-        this.initiated,
-        this.app,
-        this.allInstances,
-      );
-      initializer.init();
-      Object.keys(initializer.exportedServices).forEach((key: string) => {
-        this.providedServices[key] = initializer.exportedServices[key];
+    this.imports.forEach((Module) => {
+      new ModuleInitializer({ Module, context: this.context }).init();
+      const providedByModule = this.context.exportedInstances[Module.name] || [];
+      providedByModule.forEach((instance) => {
+        this.provided[instance.constructor.name] = instance;
       });
     });
   }
 
   private initProviders() {
-    const providers = this.params.providers || [];
-    providers.forEach(this.initProvider);
+    this.providers.forEach(this.initProvider);
   }
 
   private initControllers() {
-    const toInit = this.params.controllers || [];
-    toInit.forEach(this.initController);
+    this.controllers.forEach(this.initController);
   }
 
   private initController = (Cls: ControllerClass): ControllerInstance => {
-    setControllerApp(Cls, this.app);
+    setControllerApp(Cls, this.context.app);
 
     const toInject = getInjectedList(Cls);
-    const args = toInject.map((item: string) => this.providedServices[item]);
+    const args = toInject.map((item: string) => this.provided[item]);
     const controller = new (Cls as any)(...args);
-    this.allInstances[Cls.name] = controller;
+    this.context.allInstances[Cls.name] = controller;
 
     // eslint-disable-next-line
     for (const key in controller) {
@@ -93,12 +92,13 @@ export class ModuleInitializer {
 
   private initProvider = (Cls: ServiceClass) => {
     const toInject = getInjectedList(Cls);
-    const args = toInject.map((item: string) => this.providedServices[item]);
+    const args = toInject.map((item: string) => this.provided[item]);
     const service = new (Cls as any)(...args);
-    this.providedServices[Cls.name] = service;
-    this.allInstances[Cls.name] = service;
+    this.provided[Cls.name] = service;
+    this.context.allInstances[Cls.name] = service;
 
-    const toExport = this.params.export || [];
-    if (toExport.includes(Cls)) this.exportedServices[Cls.name] = service;
+    if (this.exports.includes(Cls)) {
+      this.context.addExported(this.moduleName, service);
+    }
   };
 }
