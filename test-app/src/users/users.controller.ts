@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Inject, Params, Post } from '../../../src';
+import { Body, Controller, Delete, Get, Inject, Params, Post, Query } from '../../../src';
 import { APP_ROUTES } from '../constants';
 import { UserCreateRequestData } from './dto/create.dto';
 import { UserDeleteRequestParams } from './dto/delete.dto';
+import { FindUsersRequestQuery } from './dto/find.dto';
 import { UsersService } from './users.service';
 
 @Controller(APP_ROUTES.users.root)
@@ -11,9 +12,10 @@ export class UsersController {
     private readonly service: UsersService,
   ) {}
 
-  @Get(APP_ROUTES.users.findAll)
-  public findAll() {
-    return this.service.findAllUsers();
+  @Get(APP_ROUTES.users.find)
+  public find(@Query(FindUsersRequestQuery) query: FindUsersRequestQuery) {
+    const payload = this.service.find();
+    return { status: 'ok', payload, query };
   }
 
   @Post(APP_ROUTES.users.create)

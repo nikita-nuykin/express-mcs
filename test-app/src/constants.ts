@@ -5,7 +5,7 @@ export const APP_ROUTES = {
   testRequest: '/test/request-params/:id/:type',
   users: {
     root: '/api/v1/users',
-    findAll: '',
+    find: '',
     create: '',
     delete: '/:id',
   },

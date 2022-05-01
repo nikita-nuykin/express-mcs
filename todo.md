@@ -1,7 +1,8 @@
 ## TODO
-- [x] Query validation support
-  - [ ] Tests
-- [ ] Example app with mikro-orm
+- [ ] Example app
+  - [ ] mikro-orm
+  - [ ] auth
+  - [ ] jwt
 
 - [ ] Docs
   - [ ] Controller
@@ -30,4 +31,6 @@
 - [x] Body validation support
   - [x] Tests
 - [x] Params validation support
+  - [x] Tests
+- [x] Query validation support
   - [x] Tests

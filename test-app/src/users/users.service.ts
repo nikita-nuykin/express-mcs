@@ -9,7 +9,7 @@ export class UsersService {
     @Inject(BooksAdminService) private readonly booksAdminService: BooksAdminService,
   ) {}
 
-  public findAllUsers() {
+  public find() {
     return [];
   }
 

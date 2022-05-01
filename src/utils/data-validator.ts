@@ -1,5 +1,7 @@
+import 'reflect-metadata';
 import { Response } from 'express';
 import { validate } from 'class-validator';
+import { plainToInstance } from 'class-transformer';
 import { ExpectedDataClass } from '../types';
 
 export type GetValidatedDataProps = {
@@ -9,10 +11,7 @@ export type GetValidatedDataProps = {
 };
 
 export async function getValidatedData({ data, Cls, res }: GetValidatedDataProps) {
-  const instance = new Cls();
-  Object.entries(data).forEach(([key, value]) => {
-    instance[key] = value;
-  });
+  const instance = plainToInstance(Cls, data);
   const errors = await validate(instance);
   if (!errors.length) return instance;
   res.status(400).json(errors).send();

@@ -3,7 +3,6 @@ import { v4 as uuid } from 'uuid';
 import { APP_ROUTES } from '../src/constants';
 import { environment } from '../src/environment';
 import { UserCreateRequestData } from '../src/users/dto/create.dto';
-import { UserDeleteRequestParams } from '../src/users/dto/delete.dto';
 import { UserType } from '../src/users/user.constants';
 import { setUrlParams } from '../src/utils/set-url-params';
 import { getRequest, stopServer } from './utils';
@@ -125,6 +124,18 @@ describe('Controller Methods', () => {
         expect(res.statusCode).toBe(400);
         expect(res.body.status).toBeFalsy();
       });
+
+      test('Extra field in props', async () => {
+        const request = getRequest();
+        const data = {
+          name: uuid(),
+          type: UserType.Author,
+          extra: uuid(),
+        };
+        const res = await request.post(APP_ROUTES.users.root + APP_ROUTES.users.create).send(data);
+        expect(res.statusCode).toBe(200);
+        expect(res.body.status).toBe('ok');
+      });
     });
 
     describe('Request params validation', () => {
@@ -143,6 +154,27 @@ describe('Controller Methods', () => {
         const params = { id: 100 };
         const url = setUrlParams(APP_ROUTES.users.root + APP_ROUTES.users.delete, params);
         const res = await request.delete(url);
+        expect(res.statusCode).toBe(400);
+        expect(res.body.status).toBeFalsy();
+      });
+    });
+
+    describe('Query params validation', () => {
+      test('Valid data scheme', async () => {
+        const request = getRequest();
+        const query = { limit: 100, page: 2 };
+        const url = APP_ROUTES.users.root + APP_ROUTES.users.find;
+        const res = await request.get(url).query(query);
+        expect(res.statusCode).toBe(200);
+        expect(res.body.status).toBe('ok');
+        expect(res.body.query).toEqual(query);
+      });
+
+      test('Invalid data scheme', async () => {
+        const request = getRequest();
+        const query = { limit: -100, page: 'second' };
+        const url = APP_ROUTES.users.root + APP_ROUTES.users.find;
+        const res = await request.get(url).query(query);
         expect(res.statusCode).toBe(400);
         expect(res.body.status).toBeFalsy();
       });
