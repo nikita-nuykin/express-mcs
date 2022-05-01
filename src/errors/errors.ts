@@ -5,3 +5,15 @@ export class AppDidNotFoundError extends Error {
     super(ErrorName.AppDidNotFoundError);
   }
 }
+
+export class HttpError extends Error {
+  constructor(statusCode: number) {
+    super(String(statusCode));
+  }
+}
+
+export class AuthorizationError extends HttpError {
+  constructor() {
+    super(401);
+  }
+}

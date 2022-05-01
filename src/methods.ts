@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Method } from './constants';
+import { handleError } from './errors/error-handler';
 import { ControllerInstance, MethodName } from './types';
 import { getControllerApp } from './utils/inject-app';
 import { getMethodParams } from './utils/method-params';
@@ -17,9 +18,13 @@ function createMethodDecorator(httpMethod: Method) {
           const args = await getMethodParams(controller, key, req, res);
           if (res.headersSent) return;
 
-          const result = await controllerMethod.call(this, ...args);
-          if (!res.headersSent) {
-            res.json(result);
+          try {
+            const result = await controllerMethod.call(this, ...args);
+            if (!res.headersSent) {
+              res.json(result);
+            }
+          } catch (error: unknown) {
+            handleError(res, error);
           }
         };
         getControllerApp(controller)[httpMethod](url, method);
