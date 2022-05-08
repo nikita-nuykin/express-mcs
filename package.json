@@ -1,8 +1,9 @@
 {
   "name": "express-mcs",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Decorator based Module-Controller-Service system for Express",
-  "main": "src/index.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "author": "Nikita Nuykin",
   "license": "MIT",
   "private": false,
@@ -11,15 +12,22 @@
     "type": "git",
     "url": "https://github.com/nikita-nuykin/express-mcs.git"
   },
-  "keywords": [],
+  "keywords": ["express", "mcs", "module-controller-service"],
   "bugs": {
     "url": "https://github.com/nikita-nuykin/express-mcs/issues"
   },
+  "files": [
+    "lib/**/*"
+  ],
   "scripts": {
     "build": "yarn tsc",
     "typecheck": "tsc --noEmit && cd test-app && yarn typecheck",
     "lint": "eslint . --ext .ts",
-    "test": "cd test-app && yarn test"
+    "test": "cd test-app && yarn test",
+    "prepare" : "yarn build",
+    "prepublishOnly" : "yarn lint && yarn build",
+    "preversion" : "yarn lint",
+    "postversion" : "git push && git push --tags"
   },
   "dependencies": {
     "class-transformer": "0.5.1",
