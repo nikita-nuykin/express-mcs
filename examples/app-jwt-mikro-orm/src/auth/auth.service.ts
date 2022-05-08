@@ -1,4 +1,4 @@
-import { Inject } from '../../../../src';
+import { Inject } from 'express-mcs';
 import { User } from '../users/users.entity';
 import { UsersService } from '../users/users.service';
 import { JWT } from '../utils/jwt';

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Post, Req } from '../../../../src';
+import { Body, Controller, Get, Inject, Post, Req } from 'express-mcs';
 
 import { APP_ROUTES } from '../constants';
 

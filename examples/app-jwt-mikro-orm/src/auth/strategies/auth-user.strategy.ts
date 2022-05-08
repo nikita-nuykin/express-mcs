@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { AuthorizationError, getMiddleware } from '../../../../../src';
+import { AuthorizationError, getMiddleware } from 'express-mcs';
 import { database } from '../../database';
 import { User } from '../../users/users.entity';
 import { UsersRepository } from '../../users/users.repository';

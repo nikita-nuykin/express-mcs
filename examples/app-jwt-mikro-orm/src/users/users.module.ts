@@ -1,4 +1,4 @@
-import { Module } from '../../../../src';
+import { Module } from 'express-mcs';
 import { UsersService } from './users.service';
 
 @Module({

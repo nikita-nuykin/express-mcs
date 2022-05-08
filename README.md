@@ -4,6 +4,10 @@ Express-mcs is a decorator-based mini-framework that brings module-controller-se
 
 Project is inspired by NestJS.
 
+Numbers:
+* [Dependency tree](https://npm.anvaka.com/#/view/2d/express-mcs)
+* [Bundle size and download time](https://bundlephobia.com/package/express-mcs@1.0.0)
+
 ## Installation
 
 ### Npm
@@ -224,3 +228,36 @@ export class UsersController {
 ```
 
 Params params can also be validated. It shares the same syntax as Body decorator.
+
+## Custom middleware
+
+### ApiKey auth middleware
+
+```typescript
+import { getMiddleware, AuthorizationError } from 'express-mcs';
+import { environment } from '../../environment';
+
+export const AppApiGuard = getMiddleware(async (req) => {
+  if (req.headers.apikey !== environment.API_KEY) {
+    throw new AuthorizationError();
+  }
+});
+```
+
+```typescript
+import { Controller, Post } from 'express-mcs';
+import { AppApiGuard } from './api-key.strategy';
+
+@Controller('/api/v1/data-sync')
+export class DataSyncController {
+  @Post('/sync')
+  @AppApiGuard
+  public async syncItems() {
+    // ...
+  }
+}
+```
+
+## Examples
+
+- [App with mikro-orm](https://github.com/nikita-nuykin/express-mcs/tree/main/examples/app-jwt-mikro-orm)

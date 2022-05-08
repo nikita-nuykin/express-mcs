@@ -1,4 +1,4 @@
-import { Controller, Get } from '../../../../src';
+import { Controller, Get } from 'express-mcs';
 import { APP_ROUTES } from '../constants';
 
 @Controller()

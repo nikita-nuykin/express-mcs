@@ -1,4 +1,4 @@
-import { Module } from '../../../../src';
+import { Module } from 'express-mcs';
 import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
 import { AppStatusController } from './app.controller';
