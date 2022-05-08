@@ -32,8 +32,8 @@
     "typecheck": "tsc --noEmit",
     "test": "jest --run-in-band",
     "build": "yarn tsc",
-    "start": "node ./dist/examples/app-jwt-mikro-orm/src/index.js",
-    "dev": "concurrently \"yarn tsc --watch\" \"nodemon -q ./dist/examples/app-jwt-mikro-orm/src/index.js\"",
+    "start": "node ./lib/examples/app-jwt-mikro-orm/src/index.js",
+    "dev": "concurrently \"yarn tsc --watch\" \"nodemon -q ./lib/examples/app-jwt-mikro-orm/src/index.js\"",
     "db:migration:new": "mikro-orm migration:create",
     "db:migrate": "mikro-orm migration:up"
   },
@@ -41,7 +41,7 @@
     "useTsNode": true,
     "configPaths": [
       "./src/mikro-orm.config.ts",
-      "./dist/mikro-orm.config.js"
+      "./lib/mikro-orm.config.js"
     ]
   }
 }
