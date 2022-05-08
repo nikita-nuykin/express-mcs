@@ -6,7 +6,7 @@ Project is inspired by NestJS.
 
 Numbers:
 * [Dependency tree](https://npm.anvaka.com/#/view/2d/express-mcs)
-* [Bundle size and download time](https://bundlephobia.com/package/express-mcs@1.0.0)
+* [Bundle size and download time](https://bundlephobia.com/package/express-mcs@1.1.0)
 
 ## Installation
 
@@ -69,7 +69,10 @@ export class AppModule {}
 ```typescript
 // ...
 
-initAppModule(AppModule, app);
+initAppModule({
+  Module: AppModule,
+  app
+});
 
 // ...
 
@@ -170,7 +173,67 @@ export class UsersController {
 }
 ```
 
-To validate body, just use DTO class as an argument
+#### Query
+
+Injects request query params to controller method.
+
+```typescript
+import { Response } from 'express';
+import { Controller, Get, Query } from 'express-mcs';
+
+@Controller('/api/v1/users')
+export class UsersController {
+  @Get('/find')
+  public async find(@Query() pagination: UserFindRequestQuery) {
+    ...
+  }
+}
+```
+
+#### Params
+
+Injects request query params to controller method.
+
+```typescript
+import { Response } from 'express';
+import { Controller, Get, Params } from 'express-mcs';
+
+@Controller('/api/v1/users')
+export class UsersController {
+  @Get('/:id')
+  public async findOne(@Params() {id}: UserFindOneRequestParams) {
+    ...
+  }
+}
+```
+
+## Data validation
+
+Create validation func
+
+```typescript
+import { validate } from 'class-validator';
+import { Response } from 'express';
+
+export async function getValidatedData(data: any, res: Response): Promise<unknown> {
+  const errors = await validate(data);
+  if (!errors.length) return data;
+  res.status(400).json(errors).send();
+  return undefined;
+}
+```
+
+Pass validation function to module init
+
+```typescript
+export const appModule = initAppModule({
+  Module: AppModule,
+  app,
+  getValidatedData,
+});
+```
+
+Pass DTO class to Query/Body/Params
 
 ```typescript
 import { IsString } from 'class-validator';
@@ -190,44 +253,6 @@ export class UsersController {
   }
 }
 ```
-
-#### Query
-
-Injects request query params to controller method.
-
-```typescript
-import { Response } from 'express';
-import { Controller, Get, Query } from 'express-mcs';
-
-@Controller('/api/v1/users')
-export class UsersController {
-  @Get('/find')
-  public async find(@Query() pagination: UserFindRequestQuery) {
-    ...
-  }
-}
-```
-
-Query params can also be validated. It shares the same syntax as Body decorator.
-
-#### Params
-
-Injects request query params to controller method.
-
-```typescript
-import { Response } from 'express';
-import { Controller, Get, Params } from 'express-mcs';
-
-@Controller('/api/v1/users')
-export class UsersController {
-  @Get('/:id')
-  public async findOne(@Params() {id}: UserFindOneRequestParams) {
-    ...
-  }
-}
-```
-
-Params params can also be validated. It shares the same syntax as Body decorator.
 
 ## Custom middleware
 

@@ -1,18 +1,23 @@
 import 'reflect-metadata';
 import { Response } from 'express';
-import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
-import { ExpectedDataClass } from '../types';
+import { ExpectedDataClass, GetValidatedData } from '../types';
 
 export type GetValidatedDataProps = {
   data: Record<string, unknown>;
   Cls: ExpectedDataClass;
   res: Response;
+  getValidatedData?: GetValidatedData;
 };
 
-export async function getValidatedData({ data, Cls, res }: GetValidatedDataProps) {
+export async function getValidatedDataWrapper({
+  data,
+  Cls,
+  res,
+  getValidatedData,
+}: GetValidatedDataProps) {
+  if (!getValidatedData) return data;
+
   const instance = plainToInstance(Cls, data);
-  const errors = await validate(instance);
-  if (!errors.length) return instance;
-  res.status(400).json(errors).send();
+  return await getValidatedData(instance, res);
 }

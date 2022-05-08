@@ -1,6 +1,7 @@
-import { Express } from 'express';
+import { Response } from 'express';
+import { AppContext } from './app-context';
 import {
-  CONTROLLER_APP_PROPERTY_NAME,
+  CONTROLLER_APP_CONTEXT_PROPERTY_NAME,
   CONTROLLER_METHOD_PARAMS_PROPERTY_NAME,
   CONTROLLER_ROOT_PATH_PROPERTY_NAME,
   ParamType,
@@ -35,7 +36,7 @@ export type ModuleClass = Function & {
 
 export type ControllerInstance = {
   [CONTROLLER_METHOD_PARAMS_PROPERTY_NAME]?: ClassMethodParamMetadata;
-  [CONTROLLER_APP_PROPERTY_NAME]?: Express;
+  [CONTROLLER_APP_CONTEXT_PROPERTY_NAME]?: AppContext;
   [CONTROLLER_ROOT_PATH_PROPERTY_NAME]?: string;
 };
 
@@ -55,3 +56,5 @@ export type ServiceClass = Function & {
 };
 
 export type ControllerMethod = () => unknown;
+
+export type GetValidatedData = (data: any, res: Response) => Promise<unknown>;

@@ -1,5 +1,5 @@
 import { AppContext } from './app-context';
-import { CONTROLLER_APP_PROPERTY_NAME } from './constants';
+import { CONTROLLER_APP_CONTEXT_PROPERTY_NAME } from './constants';
 import {
   ControllerClass,
   ControllerInstance,
@@ -9,7 +9,7 @@ import {
   ServiceClass,
   ServiceInstance,
 } from './types';
-import { setControllerApp } from './utils/inject-app';
+import { setContextToController } from './utils/inject-context';
 import { getInjectedList } from './utils/injected';
 
 export type ModuleInitializerProps = {
@@ -73,7 +73,7 @@ export class ModuleInitializer {
   }
 
   private initController = (Cls: ControllerClass): ControllerInstance => {
-    setControllerApp(Cls, this.context.app);
+    setContextToController(Cls, this.context);
 
     const toInject = getInjectedList(Cls);
     const args = toInject.map((item: string) => this.provided[item]);
@@ -82,7 +82,7 @@ export class ModuleInitializer {
 
     // eslint-disable-next-line
     for (const key in controller) {
-      if (key === CONTROLLER_APP_PROPERTY_NAME) continue;
+      if (key === CONTROLLER_APP_CONTEXT_PROPERTY_NAME) continue;
       if (typeof (controller as any)[key] === 'function') {
         ((controller as any)[key] as ControllerMethod)();
       }

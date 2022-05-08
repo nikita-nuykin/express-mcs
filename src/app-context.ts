@@ -1,8 +1,15 @@
 import { Express } from 'express';
-import { ControllerClass, ControllerInstance, ServiceClass, ServiceInstance } from './types';
+import {
+  ControllerClass,
+  ControllerInstance,
+  ServiceClass,
+  ServiceInstance,
+  GetValidatedData,
+} from './types';
 
 export type AppContextProps = {
   app: Express;
+  getValidatedData?: GetValidatedData;
 };
 
 export class AppContext {
@@ -10,9 +17,11 @@ export class AppContext {
   public readonly allInstances: Record<string, ServiceInstance | ControllerInstance> = {};
   public readonly initiatedModules: string[] = [];
   public readonly exportedInstances: Record<string, ServiceInstance[]> = {};
+  public readonly getValidatedData: GetValidatedData | undefined;
 
-  constructor({ app }: AppContextProps) {
+  constructor({ app, getValidatedData }: AppContextProps) {
     this.app = app;
+    this.getValidatedData = getValidatedData;
   }
 
   public get<T>(Cls: ServiceClass | ControllerClass): T {

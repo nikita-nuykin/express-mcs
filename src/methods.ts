@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { Method } from './constants';
 import { handleError } from './errors/error-handler';
 import { ControllerInstance, MethodName } from './types';
-import { getControllerApp } from './utils/inject-app';
+import { getAppFromController, getValidateFuncFromController } from './utils/inject-context';
 import { getMethodParams } from './utils/method-params';
 import { getControllerRootPath } from './utils/root-path';
 
@@ -14,8 +14,9 @@ function createMethodDecorator(httpMethod: Method) {
       descriptor.value = async function wrapper() {
         const controller = this as ControllerInstance;
         const url = getControllerRootPath(controller) + path;
+        const getValidatedDataFunc = getValidateFuncFromController(controller);
         const method = async (req: Request, res: Response) => {
-          const args = await getMethodParams(controller, key, req, res);
+          const args = await getMethodParams(controller, key, req, res, getValidatedDataFunc);
           if (res.headersSent) return;
 
           try {
@@ -27,7 +28,7 @@ function createMethodDecorator(httpMethod: Method) {
             handleError(res, error);
           }
         };
-        getControllerApp(controller)[httpMethod](url, method);
+        getAppFromController(controller)[httpMethod](url, method);
       };
 
       descriptor.enumerable = true;
