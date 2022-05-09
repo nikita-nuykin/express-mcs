@@ -17,16 +17,16 @@ function createMethodDecorator(httpMethod: Method) {
         const url = getControllerRootPath(controller) + path;
         const getValidatedDataFunc = getValidateFuncFromController(controller);
         const method = async (req: Request, res: Response) => {
-          if (before) {
-            for (const func of before) {
-              await func(req, res);
-            }
-          }
-
-          const args = await getMethodParams(controller, key, req, res, getValidatedDataFunc);
-          if (res.headersSent) return;
-
           try {
+            if (before) {
+              for (const func of before) {
+                await func(req, res);
+              }
+            }
+
+            const args = await getMethodParams(controller, key, req, res, getValidatedDataFunc);
+            if (res.headersSent) return;
+
             const result = await controllerMethod.call(this, ...args);
             if (!res.headersSent) {
               res.json(result);

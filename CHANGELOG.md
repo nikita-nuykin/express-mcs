@@ -2,6 +2,12 @@
 
 _This changelog follows the [keep a changelog](https://keepachangelog.com)_ format to maintain a human readable changelog.
 
+### [1.1.2](https://github.com/nikita-nuykin/express-mcs/compare/v1.1.1...v1.1.2) (2022-05-09)
+
+#### Changed
+
+- Error handler includes custom middleware
+
 ### [1.1.1](https://github.com/nikita-nuykin/express-mcs/compare/v1.1.0...v1.1.1) (2022-05-09)
 
 #### Added
