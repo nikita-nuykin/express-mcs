@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Method } from './constants';
 import { handleError } from './errors/error-handler';
+import { BaseReqResDecoratorFunc } from './middleware';
 import { ControllerInstance, MethodName } from './types';
 import { getAppFromController, getValidateFuncFromController } from './utils/inject-context';
 import { getMethodParams } from './utils/method-params';
@@ -11,11 +12,17 @@ function createMethodDecorator(httpMethod: Method) {
     return (target: unknown, key: MethodName, descriptor: PropertyDescriptor) => {
       const controllerMethod = descriptor.value;
 
-      descriptor.value = async function wrapper() {
+      descriptor.value = async function wrapper(before?: BaseReqResDecoratorFunc[]) {
         const controller = this as ControllerInstance;
         const url = getControllerRootPath(controller) + path;
         const getValidatedDataFunc = getValidateFuncFromController(controller);
         const method = async (req: Request, res: Response) => {
+          if (before) {
+            for (const func of before) {
+              await func(req, res);
+            }
+          }
+
           const args = await getMethodParams(controller, key, req, res, getValidatedDataFunc);
           if (res.headersSent) return;
 

@@ -9,6 +9,14 @@ export function getMiddleware(func: BaseReqResDecoratorFunc) {
     descriptor.value = async function inner(...args: unknown[]) {
       const req = args[args.length - 2] as Request;
       const res = args[args.length - 1] as Response;
+
+      // method init
+      if (!req && !res) {
+        const callBefore: unknown[] = (args[0] as unknown[]) || [];
+        callBefore.push(func);
+        return controllerMethod.call(this, callBefore);
+      }
+
       if (req && res) {
         await func(req, res);
       }

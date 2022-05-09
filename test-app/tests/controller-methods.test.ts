@@ -96,9 +96,13 @@ describe('Controller Methods', () => {
     test('Middleware can prevent method execution', async () => {
       const request = getRequest();
       const headers = { apikey: uuid() };
-      const res = await request.get(APP_ROUTES.statusApiKey1).set(headers);
-      expect(res.statusCode).toBe(401);
-      expect(res.body).toEqual({});
+      const res1 = await request.get(APP_ROUTES.statusApiKey1).set(headers);
+      expect(res1.statusCode).toBe(401);
+      expect(res1.body).toEqual({});
+
+      const res2 = await request.get(APP_ROUTES.statusApiKey2).set(headers);
+      expect(res2.statusCode).toBe(401);
+      expect(res2.body).toEqual({});
     });
   });
 
