@@ -12,3 +12,9 @@ export class NotImplementedError extends CustomError {
     super(ErrorName.NotImplementedError);
   }
 }
+
+export class UserDoesNotExistError extends CustomError {
+  constructor() {
+    super(ErrorName.UserDoesNotExistError);
+  }
+}

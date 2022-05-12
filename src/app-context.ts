@@ -5,11 +5,13 @@ import {
   ServiceClass,
   ServiceInstance,
   GetValidatedData,
+  HandleError,
 } from './types';
 
 export type AppContextProps = {
   app: Express;
   getValidatedData?: GetValidatedData;
+  handleError?: HandleError;
 };
 
 export class AppContext {
@@ -18,10 +20,12 @@ export class AppContext {
   public readonly initiatedModules: string[] = [];
   public readonly exportedInstances: Record<string, ServiceInstance[]> = {};
   public readonly getValidatedData: GetValidatedData | undefined;
+  public readonly handleError: HandleError | undefined;
 
-  constructor({ app, getValidatedData }: AppContextProps) {
+  constructor({ app, getValidatedData, handleError }: AppContextProps) {
     this.app = app;
     this.getValidatedData = getValidatedData;
+    this.handleError = handleError;
   }
 
   public get<T>(Cls: ServiceClass | ControllerClass): T {

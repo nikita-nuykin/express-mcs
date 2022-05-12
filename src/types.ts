@@ -58,3 +58,5 @@ export type ServiceClass = Function & {
 export type ControllerMethod = () => unknown;
 
 export type GetValidatedData = (data: any, res: Response) => Promise<unknown>;
+
+export type HandleError = (res: Response, error: unknown) => Promise<void>;

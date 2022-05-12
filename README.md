@@ -283,6 +283,35 @@ export class DataSyncController {
 }
 ```
 
+## Handling errors
+
+```typescript
+import { Response } from 'express';
+import { HandleError, handleError as handleErrorDefault } from 'express-mcs';
+import { CustomError } from './custom-error';
+
+export const handleError: HandleError = async (res: Response, error: unknown) => {
+  if (error instanceof CustomError) {
+    res.status(400).json({ message: error.message });
+  } else {
+    await handleErrorDefault(res, error);
+  }
+};
+```
+
+```typescript
+// ...
+import { handleError } from './errors/handle-error';
+// ...
+
+export const appModule = initAppModule({
+  Module: AppModule,
+  app,
+  getValidatedData,
+  handleError,
+});
+```
+
 ## Examples
 
 - [App with mikro-orm](https://github.com/nikita-nuykin/express-mcs/tree/main/examples/app-jwt-mikro-orm)

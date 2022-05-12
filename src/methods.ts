@@ -1,9 +1,13 @@
 import { Request, Response } from 'express';
 import { Method } from './constants';
-import { handleError } from './errors/error-handler';
+import { handleError as defaultHandleError } from './errors/error-handler';
 import { BaseReqResDecoratorFunc } from './middleware';
 import { ControllerInstance, MethodName } from './types';
-import { getAppFromController, getValidateFuncFromController } from './utils/inject-context';
+import {
+  getAppFromController,
+  getValidateFuncFromController,
+  getCustomHandleErrorFunc,
+} from './utils/inject-context';
 import { getMethodParams } from './utils/method-params';
 import { getControllerRootPath } from './utils/root-path';
 
@@ -16,6 +20,7 @@ function createMethodDecorator(httpMethod: Method) {
         const controller = this as ControllerInstance;
         const url = getControllerRootPath(controller) + path;
         const getValidatedDataFunc = getValidateFuncFromController(controller);
+        const handleError = getCustomHandleErrorFunc(controller) || defaultHandleError;
         const method = async (req: Request, res: Response) => {
           try {
             if (before) {
@@ -32,7 +37,7 @@ function createMethodDecorator(httpMethod: Method) {
               res.json(result);
             }
           } catch (error: unknown) {
-            handleError(res, error);
+            await handleError(res, error);
           }
         };
         getAppFromController(controller)[httpMethod](url, method);

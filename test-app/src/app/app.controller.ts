@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { Body, Controller, Get, Headers, Params, Post, Query, Req, Res } from '../../../src';
 import { ApiKeyAuth } from '../auth/api-key-auth.strategy';
 import { APP_ROUTES } from '../constants';
+import { UserDoesNotExistError } from '../errors/errors';
 
 @Controller()
 export class AppStatusController {
@@ -49,5 +50,10 @@ export class AppStatusController {
   @Get(APP_ROUTES.statusApiKey2)
   public statusApiKey2() {
     return { status: 'ok' };
+  }
+
+  @Get(APP_ROUTES.customError)
+  public customError() {
+    throw new UserDoesNotExistError();
   }
 }

@@ -5,3 +5,5 @@ export * from './methods';
 export * from './module';
 export * from './inject';
 export * from './errors/errors';
+export * from './errors/error-handler';
+export * from './types';
