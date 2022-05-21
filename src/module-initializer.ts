@@ -1,5 +1,6 @@
 import { AppContext } from './app-context';
 import { CONTROLLER_APP_CONTEXT_PROPERTY_NAME } from './constants';
+import { InjectedDependencyWasNotFoundError } from './errors/errors';
 import {
   ControllerClass,
   ControllerInstance,
@@ -76,7 +77,7 @@ export class ModuleInitializer {
     setContextToController(Cls, this.context);
 
     const toInject = getInjectedList(Cls);
-    const args = toInject.map((item: string) => this.provided[item]);
+    const args = toInject.map((item: string) => this.getProvidedDependency(Cls, item));
     const controller = new (Cls as any)(...args);
     this.context.allInstances[Cls.name] = controller;
 
@@ -92,7 +93,7 @@ export class ModuleInitializer {
 
   private initProvider = (Cls: ServiceClass) => {
     const toInject = getInjectedList(Cls);
-    const args = toInject.map((item: string) => this.provided[item]);
+    const args = toInject.map((item: string) => this.getProvidedDependency(Cls, item));
     const service = new (Cls as any)(...args);
     this.provided[Cls.name] = service;
     this.context.allInstances[Cls.name] = service;
@@ -101,4 +102,15 @@ export class ModuleInitializer {
       this.context.addExported(this.moduleName, service);
     }
   };
+
+  private getProvidedDependency(
+    consumer: ServiceClass | ControllerClass,
+    toInject: string,
+  ): ServiceInstance {
+    const result = this.provided[toInject];
+    if (!result) {
+      throw new InjectedDependencyWasNotFoundError(toInject, consumer.name);
+    }
+    return result;
+  }
 }

@@ -17,3 +17,9 @@ export class AuthorizationError extends HttpError {
     super(401);
   }
 }
+
+export class InjectedDependencyWasNotFoundError extends Error {
+  constructor(injected: string, consumer: string) {
+    super(ErrorName.InjectedDependencyWasNotFoundError + `: ${injected} injected into ${consumer}`);
+  }
+}

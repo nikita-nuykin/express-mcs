@@ -20,10 +20,4 @@ describe('Inject decorator', () => {
     expect(bookService).toBeTruthy();
     expect(bookService.getBookTitles().length).toEqual(1);
   });
-
-  test('BookAdminService is not injected to UsersService', () => {
-    const usersService = appModule.get<UsersService>(UsersService);
-    const bookAdminService = usersService['booksAdminService'];
-    expect(bookAdminService).toBeFalsy();
-  });
 });
