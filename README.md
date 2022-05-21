@@ -314,4 +314,5 @@ export const appModule = initAppModule({
 
 ## Examples
 
-- [App with mikro-orm](https://github.com/nikita-nuykin/express-mcs/tree/main/examples/app-jwt-mikro-orm)
+- [App with mikro-orm and jwt](https://github.com/nikita-nuykin/express-mcs/tree/main/examples/app-jwt-mikro-orm)
+- [App with typeorm and jwt](https://github.com/nikita-nuykin/express-mcs/tree/main/examples/app-jwt-typeorm)

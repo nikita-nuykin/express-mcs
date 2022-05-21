@@ -2,6 +2,12 @@
 
 _This changelog follows the [keep a changelog](https://keepachangelog.com)_ format to maintain a human readable changelog.
 
+### [1.3.1](https://github.com/nikita-nuykin/express-mcs/compare/v1.3.0...v1.3.1) (2022-05-21)
+
+#### Added
+
+- Example app with typeorm and jwt
+
 ### [1.3.0](https://github.com/nikita-nuykin/express-mcs/compare/v1.2.0...v1.3.0) (2022-05-21)
 
 #### Added
