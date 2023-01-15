@@ -2,6 +2,12 @@
 
 _This changelog follows the [keep a changelog](https://keepachangelog.com)_ format to maintain a human readable changelog.
 
+### [1.3.2](https://github.com/nikita-nuykin/express-mcs/compare/v1.3.1...v1.3.2) (2023-01-15)
+
+#### Changed
+
+- Dependency versions bump
+
 ### [1.3.1](https://github.com/nikita-nuykin/express-mcs/compare/v1.3.0...v1.3.1) (2022-05-21)
 
 #### Added

@@ -9,7 +9,7 @@ async function main() {
   const app: Express = express();
   await database.init();
   app.use(bodyParser.json());
-  initAppModule(AppModule, app);
+  initAppModule({ Module: AppModule, app });
   app.listen(environment.PORT, () => {
     // Pass
   });

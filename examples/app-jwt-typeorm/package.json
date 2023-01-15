@@ -8,10 +8,10 @@
   "private": true,
   "dependencies": {
     "body-parser": "1.20.1",
-    "class-validator": "0.13.2",
+    "class-validator": "0.14.0",
     "dotenv": "16.0.0",
     "express": "4.17.3",
-    "express-mcs": "1.0.0",
+    "express-mcs": "1.3.2",
     "jsonwebtoken": "9.0.0",
     "pg": "8.7.3",
     "typeorm": "0.3.6",
